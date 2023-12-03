@@ -6,6 +6,8 @@
 
 int display_number(int num){
     switch (num) {
+	case -1:
+		return 0b00000000;
         case 0:
                 return 0b00111111;
         case 1:
