@@ -79,7 +79,7 @@ int main(){
 		sec = now->tm_sec;
         	min = now->tm_min;
         	hour24 = now->tm_hour;
-
+		hour12 = hour24;
 		// Change hour value to 12 hr
 		if (hour24 > 12) hour12 = hour24 - 12;
 
@@ -91,6 +91,9 @@ int main(){
 		if (hour12 > 9){
 	                buffer[1] = display_number(1);
                         buffer[3] = display_number(hour12-10);
+		}else if (hour12 == 0){
+			buffer[1] = display_number(1);
+                        buffer[3] = display_number(2);
 		}else{
 	      	        buffer[1] = display_number(-1);
 			buffer[3] = display_number(hour12);
