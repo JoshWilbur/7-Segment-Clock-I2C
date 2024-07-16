@@ -19,7 +19,7 @@ int main(){
         ht16k33_setup();
 	buffer[0] = 0;
 	outside_loop(3);
-	int sec, min, min_1s, min_10s, hour24, hour12, temp,  temp_1s, temp_10s = 0;
+	int sec, min, min_1s, min_10s, hour24, hour12, temp, temp_1s, temp_10s = 0;
 	while(1){
 		// Update time;
 		time(&current_time);
@@ -44,11 +44,11 @@ int main(){
 		// At the beginning of every new hour, do a loop around the outside of the display
 		if (min == 0 && sec == 0){
 			outside_loop(2);
-			temp = get_temp(); // Also obtain temperature
 		}
 
 		// Display temperature every 15 mins
 		if ((min % 15 == 0) && (sec == 15)){
+			temp = get_temp(); // Obtain temperature
 			temp_10s = (temp / 10);
 			temp_1s = temp - (temp_10s * 10);
                         buffer[1] = display_number(-1);
