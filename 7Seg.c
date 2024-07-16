@@ -9,6 +9,7 @@
 #include "7Seg_setup.c"
 #include "numbers.c"
 #include "animations.c"
+#include "weather_stats.c"
 
 // Global variables
 time_t current_time;
@@ -18,7 +19,7 @@ int main(){
         ht16k33_setup();
 	buffer[0] = 0;
 	outside_loop(3);
-	int sec, min, min_1s, min_10s, hour24, hour12 = 0;
+	int sec, min, min_1s, min_10s, hour24, hour12, temp,  temp_1s, temp_10s = 0;
 	while(1){
 		// Update time;
 		time(&current_time);
@@ -30,8 +31,33 @@ int main(){
         	hour24 = now->tm_hour;
 		hour12 = hour24;
 
+		// Power saving during typical sleep hours (10pm-6am)
+		if (hour24 >= 22 || hour24 <= 6){
+			buffer[1] = display_number(-1);
+			buffer[3] = display_number(-1);
+			buffer[5] = display_number(-1);
+			buffer[7] = display_number(-1);
+			buffer[9] = display_number(-1);
+			result = write(fd, buffer, 17);
+		}else{
+
 		// At the beginning of every new hour, do a loop around the outside of the display
-		if (min == 0 && sec == 0) outside_loop(2);
+		if (min == 0 && sec == 0){
+			outside_loop(2);
+			temp = get_temp(); // Also obtain temperature
+		}
+
+		// Display temperature every 15 mins
+		if ((min % 15 == 0) && (sec == 15)){
+			temp_10s = (temp / 10);
+			temp_1s = temp - (temp_10s * 10);
+                        buffer[1] = display_number(-1);
+                        buffer[3] = display_number(-1);
+	                buffer[7] = display_number(temp_10s);
+	                buffer[9] = display_number(temp_1s);
+			result = write(fd, buffer, 17);
+			sleep(30); // Display temperature for 30 seconds
+		}
 
 		// Change hour value to 12 hr
 		if (hour24 > 12) hour12 = hour24 - 12;
@@ -63,5 +89,6 @@ int main(){
 
         	result = write(fd, buffer, 17);
 		sleep(1);
+		}
 	}
 }

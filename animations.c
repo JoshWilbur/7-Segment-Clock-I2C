@@ -41,6 +41,8 @@ void outside_loop(int num_runs){
         	buffer[1] = 0b00100000;
         	write(fd, buffer, 17);
 	        usleep(delay);
+		buffer[1] = 0b00000000;
+		write(fd, buffer, 17);
 	}
 
 }
