@@ -11,6 +11,7 @@ static int fd, result;
 static char i2c_device[]="/dev/i2c-1";
 static unsigned char buffer[17];
 
+// This function sets up and configures the i2c bus
 int ht16k33_setup(){
         // Open i2c device driver
         fd = open("/dev/i2c-1", O_RDWR);
@@ -62,4 +63,34 @@ int ht16k33_setup(){
         printf("Brightness bytes written: %d\n", result);
 
         return 0;
+}
+
+// This function returns a binary value representing segments on the display
+int display_number(int num){
+    switch (num) {
+        case -1:
+                return 0b00000000;
+        case 0:
+                return 0b00111111;
+        case 1:
+                return 0b00000110;
+        case 2:
+                return 0b01011011;
+        case 3:
+                return 0b01001111;
+        case 4:
+                return 0b01100110;
+        case 5:
+                return 0b01101101;
+        case 6:
+                return 0b01111101;
+        case 7:
+                return 0b00000111;
+        case 8:
+                return 0b01111111;
+        case 9:
+                return 0b01101111;
+        default:
+                return 0;
+    }
 }

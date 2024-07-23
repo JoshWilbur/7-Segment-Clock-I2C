@@ -9,7 +9,7 @@ int get_temp(void){
 	char command[] = "python weather.py";
 	int temp_F = -99;
 
-	// Open the command for reading, error check
+	// Run the command, error check
 	FILE *fp = popen(command, "r");
 	if (fp == NULL){
 		printf("Failed to run command\n");
