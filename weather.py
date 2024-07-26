@@ -9,7 +9,7 @@ class Weather:
     @staticmethod
     def current_temperature_f(location):
         url = f"http://wttr.in/{location}?format=%t"  # Use wttr.in for easy access to stats, no API key required
-        https_response = requests.get(url)  # Attempt to connect to website
+        https_response = requests.get(url, timeout=10)  # Attempt to connect to website, 10 second connection timeout
 
         # Check if the request was successful, remove degree symbol
         if https_response.status_code == 200:
