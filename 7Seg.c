@@ -40,11 +40,6 @@ int main(){
 			result = write(fd, buffer, 17);
 			sleep(600); // Sleep for 10 minutes
 		}else{
-			// At the beginning of every new hour, do a loop around the outside of the display
-			if (min == 0 && sec == 0){
-				outside_loop(2);
-			}
-
 			// Display temperature every 15 mins
 			if ((min % 15 == 0) && (sec == 15)){
 				temp = get_temp(); // Obtain temperature
